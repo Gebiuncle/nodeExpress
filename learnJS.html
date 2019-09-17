@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+</body>
+<script>
+  // 页面加载过程类
+  console.log(document.readyState)
+  document.onreadystatechange = function () {
+    console.log(document.readyState)
+  }
+
+  // apply call bind
+  let arr = [2, 2, 3, 8]
+  console.log(Math.max.apply(null, arr))
+
+  for (var i=0; i<3; i++) {
+    setTimeout(function(i) {
+      return function() {
+        console.log(i)
+      } 
+    }(i), 3000)
+  }
+  const list = [1, 1, 2, 3, 6, 45, 8, 5, 4, 6, 5]
+  const uniqueList = [...new Set(list)] // [1, 2, 3, 6, 45, 8, 5, 4]
+
+
+  Function.prototype.call = function () {
+    let [thisArg, ...args] = [...arguments];
+    if(!thisArg) {
+      thisArg = typeof window === 'undefined' ? global : window;
+    }
+    thisArg.fn = this;
+
+    let result = thisArg.fn(args)
+    delete thisArg.fn;
+
+    return result
+  }
+  let foo = {
+    val: 1
+  }
+  function bar (name, age) {
+    console.log(name, age)
+    console.log(this.val)
+  }
+  bar.call(foo, '小明', 22)
+
+  // 闭包
+  var name = 'liu'
+  function base () {
+    var name = '张';
+    function getInfo () {
+      console.log(this.name, name)
+    }
+    return getInfo
+  }
+
+  var info = base()
+  info()
+
+  // 解构赋值
+  function test () {
+    let arr = [...arguments]
+    console.log(typeof arguments, typeof arr)
+  }
+
+  test(2, 6)
+
+  // if判断、括号类 == 会将两边字段类型转化一致
+  var arr = []
+  if(arr) {
+    alert()
+  } 
+
+  // 浅拷贝
+  var obj = {
+    names: 'xixi',
+    say: function () {
+      console.log(this.names)
+    }
+  }
+  obj.say()
+
+  var obj2 = Object.assign({}, obj)
+  obj.names = 'xiao ming'
+  obj2.say()
+  obj.say()
+
+  var obj3 = {...obj}
+  obj3.names = 'assign methods'
+  obj3.say()
+  obj.say()
+
+  var obj4 = {}
+  for(var item in obj) {
+    obj4[item] = obj[item]
+  }
+  obj4.say()
+
+  // 判断字符串中出现字母最多的字符
+  let str = "abcabcabcbbcccccbbbb";
+  let num = 0;
+  let char = '';
+
+  // 使其按照一定的次序排列
+  str = str.split('').sort().join('');
+  // "aaabbbbbcccccccc"
+  console.log(str)
+
+  // 定义正则表达式
+  let re = /(\w)\1+/g;
+  str.replace(re,($0,$1) => {
+    console.log($0, $1)
+      if(num < $0.length){
+          num = $0.length;
+          char = $1;        
+      }
+  });
+  console.log(`字符最多的是${char}，出现了${num}次`);
+
+  var foo = 'hello';
+
+  (function(){
+    var bar = 'world'
+    alert(foo + bar)
+  })()
+
+  alert(foo + bar)
+
+</script>
+</html>
